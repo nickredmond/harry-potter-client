@@ -12,14 +12,16 @@ export class AppComponent {
   questionText = '';
   answers = [];
   rewardCode = '';
+  numberOfRightAnswers = 0;
+  numberOfRightAnswersNeeded = 30;
 
   isHome = true;
   isQuizzing = false;
-  isGameOver = false;
   isWinner = false;
 
   isAuthError = false;
-  isAnswerVerified = false;
+  isAnswerRight = false;
+  isAnswerWrong = false;
   isRewardRevealed = false;
 
   private currentQuestionId = 0;
@@ -42,8 +44,9 @@ export class AppComponent {
   }
 
   goNext() {
-    if (this.isAnswerVerified) {
-      this.isAnswerVerified = false;
+    if (this.isAnswerRight || this.isAnswerWrong) {
+      this.isAnswerRight = false;
+      this.isAnswerWrong = false;
       this.getNextQuestion();
     }
     else {
@@ -81,7 +84,6 @@ export class AppComponent {
 
         this.isHome = false;
         this.isWinner = false;
-        this.isGameOver = false;
         this.isQuizzing = true;
       },
       () => {
@@ -99,17 +101,18 @@ export class AppComponent {
     };
     this.http.post(this.serverBaseUrl + "/submit", request).toPromise().then(
       response => {
-        if (response['isCorrect']) {
-          if (response['reward']) {
-            this.rewardCode = response['reward'];
-            this.isQuizzing = false;
-            this.isWinner = true;
-          }
-          this.isAnswerVerified = true;
+        this.isAnswerRight = response['isCorrect'];
+        this.isAnswerWrong = !this.isAnswerRight;
+
+        if (this.isAnswerRight) {
+          this.numberOfRightAnswers++;
+          this.numberOfRightAnswersNeeded--;
         }
-        else {
+
+        if (response['reward']) {
+          this.rewardCode = response['reward'];
           this.isQuizzing = false;
-          this.isGameOver = true;
+          this.isWinner = true;
         }
       },
       () => {
