@@ -13,7 +13,7 @@ export class AppComponent {
   answers = [];
   rewardCode = '';
   numberOfRightAnswers = 0;
-  numberOfRightAnswersNeeded = 30;
+  numberOfRightAnswersNeeded = 35;
 
   isHome = true;
   isQuizzing = false;
