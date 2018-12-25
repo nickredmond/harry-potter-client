@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "http-server dist/whyquit-angular/ -c-1",
+    "start": "http-server dist/harry-potter-client/ -c-1",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
