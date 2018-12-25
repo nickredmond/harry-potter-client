@@ -24,7 +24,7 @@ export class AppComponent {
 
   private currentQuestionId = 0;
   private accessToken: string;
-  private serverBaseUrl = "http://localhost:8080";
+  private serverBaseUrl = "https://harry-potter-server.herokuapp.com";
 
   constructor(private http: HttpClient) {}
 
