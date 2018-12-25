@@ -1,58 +1,65 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h1>
-    Harry Potter Trivia Championship
+    Harry Potter Christmas
   </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+  <img width="300" alt="Angular Logo" src="https://static.thenounproject.com/png/7729-200.png">
 </div>
 
 <div *ngIf="isHome">
-  <div>
+  <div class="row">
     <h3>Cast your secret spell to continue:</h3>
   </div>
-  <div>
-    <div *ngIf="isAuthError">Error confirming that spell. Make sure you spelled it right.</div>
-    <input [(ngModel)]="spellCode" placeholder="Expecto patronum, etc..." />
-    <button (click)="authenticate()">Cast!</button>
+  <div class="row">
+    <div *ngIf="isAuthError" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Shucks!</strong> Your spell was ineffective. Please try again.
+    </div>
+    <div class="input-group mb-3">
+      <input [(ngModel)]="spellCode"  type="text" class="form-control" placeholder="Expecto patronum, etc..." aria-label="Secret spell" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <button (click)="authenticate()" class="btn btn-primary" type="button">Cast!</button>
+      </div>
+    </div>
   </div>
 </div>
 
 <div *ngIf="isQuizzing">
   <div>
     <h3>Question #{{ questionNumber }}:</h3>
+    <h3 *ngIf="isAnswerVerified" class="alert-success danger-text-hp">Correct!</h3>
     <div>{{ questionText }}</div>
   </div>
   <div>
     <div *ngFor="let answer of answers; let i = index; trackBy:customTrackBy">
-      <input [(ngModel)]="answers[i]" />
+      <input [(ngModel)]="answers[i]" class="form-control" />
     </div>
     <div>
-      <button class="submit-button-hp" (click)="goNext()">{{ isAnswerVerified ? 'Next' : 'Submit' }}</button>
-      <div *ngIf="isAnswerVerified">Correct!</div>
+      <button class="submit-button-hp btn btn-primary" (click)="goNext()">{{ isAnswerVerified ? 'Next' : 'Submit' }}</button>
     </div>
   </div>
 </div>
 
 <div *ngIf="isGameOver">
   <div>
-    <h3>Game Over!</h3>
-    <div>Sorry, your answer was incorrect. :(</div>
+    <h3 class="alert-danger danger-text-hp">Game Over!</h3>
+    <div style="margin-top: 0.5em; font-size: 1.25em; color: #444;">Sorry, your answer was incorrect. :(</div>
   </div>
   <div>
-    <button (click)="startOver()">Start Over</button>
+    <button (click)="startOver()" class="btn btn-secondary" style="margin-top: 0.5em;">Start Over</button>
   </div>
 </div>
 
 <div *ngIf="isWinner">
   <div>
     <h3>Congratulations!</h3>
-    <div>You answered all questions correct and have been deemed worthy of a prize. Press "Reveal" below to reveal your claim code for an Amazon gift card. NOTE: 
-      this code is only visible once.
-    </div>
+    <p>You answered all questions correct and have been deemed worthy of a prize. Press "Reveal" below to reveal your claim code for an Amazon gift card. 
+    </p>
+    <p><strong>NOTE:</strong> this code is only visible once.
+    </p>
   </div>
-  <div>
-    <button (click)="revealReward()">Reveal</button>
-    <div *ngIf="isRewardRevealed">
+  <div style="margin-top: 0.5em;">
+    <button *ngIf="!isRewardRevealed" (click)="revealReward()" class="btn btn-success">Reveal</button>
+    <div *ngIf="isRewardRevealed" style="font-size: 1.5em;">
       Claim code:&nbsp;<span>{{ rewardCode }}</span>
     </div>
   </div>
