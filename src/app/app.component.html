@@ -1,20 +1,60 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h1>
-    Welcome to {{ title }}!
+    Harry Potter Trivia Championship
   </h1>
   <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+
+<div *ngIf="isHome">
+  <div>
+    <h3>Cast your secret spell to continue:</h3>
+  </div>
+  <div>
+    <div *ngIf="isAuthError">Error confirming that spell. Make sure you spelled it right.</div>
+    <input [(ngModel)]="spellCode" placeholder="Expecto patronum, etc..." />
+    <button (click)="authenticate()">Cast!</button>
+  </div>
+</div>
+
+<div *ngIf="isQuizzing">
+  <div>
+    <h3>Question #{{ questionNumber }}:</h3>
+    <div>{{ questionText }}</div>
+  </div>
+  <div>
+    <div *ngFor="let answer of answers; let i = index; trackBy:customTrackBy">
+      <input [(ngModel)]="answers[i]" />
+    </div>
+    <div>
+      <button class="submit-button-hp" (click)="goNext()">{{ isAnswerVerified ? 'Next' : 'Submit' }}</button>
+      <div *ngIf="isAnswerVerified">Correct!</div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isGameOver">
+  <div>
+    <h3>Game Over!</h3>
+    <div>Sorry, your answer was incorrect. :(</div>
+  </div>
+  <div>
+    <button (click)="startOver()">Start Over</button>
+  </div>
+</div>
+
+<div *ngIf="isWinner">
+  <div>
+    <h3>Congratulations!</h3>
+    <div>You answered all questions correct and have been deemed worthy of a prize. Press "Reveal" below to reveal your claim code for an Amazon gift card. NOTE: 
+      this code is only visible once.
+    </div>
+  </div>
+  <div>
+    <button (click)="revealReward()">Reveal</button>
+    <div *ngIf="isRewardRevealed">
+      Claim code:&nbsp;<span>{{ rewardCode }}</span>
+    </div>
+  </div>
+</div>
 
